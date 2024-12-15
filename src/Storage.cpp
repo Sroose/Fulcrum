@@ -1887,6 +1887,9 @@ void Storage::startup()
         opts.IncreaseParallelism(int(Util::getNPhysicalProcessors()));
         opts.OptimizeLevelStyleCompaction();
 
+        // Set the log level to Error to avoid excessive WARN Tail prefetch size..
+        opts.info_log_level = rocksdb::InfoLogLevel::ERROR_LEVEL;
+
         // setup shared block cache
         rocksdb::BlockBasedTableOptions tableOptions;
         tableOptions.block_cache = rocksdb::NewLRUCache(options->db.maxMem /* capacity limit */, -1, false /* strict capacity limit=off, turning it on made db writes sometimes fail */);
